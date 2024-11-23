@@ -1,6 +1,6 @@
 "use client"
 import { Session } from "next-auth";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 interface Customers {
@@ -11,22 +11,23 @@ interface Customers {
 }
 
 export default function List() {
+  const { data: session, status } = useSession();
   const [data, setData] = useState<Customers[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  // const [session, setSession] = useState<Session | null>(null);
   
   useEffect(() => {
     const fetchData = async () => {
       const session = await getSession();
-      if (session && session.access_token) {
+      if (session && session.user.access_token) {
         const response = await fetch('http://102.210.244.222:6508/admin/customer/users', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
+            'Authorization': `Bearer ${session.user.access_token}`,
           },
         });
         if (response.ok) {
