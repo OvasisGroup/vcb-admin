@@ -41,8 +41,8 @@ export async function POST(request: Request) {
 
         // Return the successful response
         return NextResponse.json({ message: 'Success', data: responseData }, { status: 200 });
-    } catch (error) {
-        console.error('Error in POST handler:', error);
+    } catch (_error) {
+        console.error('Error in POST handler:', _error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
