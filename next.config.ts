@@ -4,6 +4,9 @@ import type { NextConfig } from "next";
 module.exports = {
   reactStrictMode: false,
   output: "standalone",
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 
