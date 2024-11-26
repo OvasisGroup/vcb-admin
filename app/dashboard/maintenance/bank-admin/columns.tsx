@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox"
+import { useRouter } from "next/navigation"
 
 
 export type BankAdmin = {
@@ -67,14 +68,12 @@ export const columns: ColumnDef<BankAdmin>[] = [
   },
 
   {
-    accessorKey: "idumber",
+    accessorKey: "idNumber",
     header: "ID Number",
   },
   
   {
     accessorKey: "createdBy",
     header: "Created By",
-  },
-
-  
+  }  
 ]
