@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { Toaster } from "@/components/ui/toaster"
 import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '../../hooks/use-toast';
 import { Button } from '../ui/button';
 
 const RetailCustomerForm = () => {

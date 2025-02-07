@@ -5,7 +5,7 @@ import { ReactElement, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { ToastAction } from '@/components/ui/toast';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '../hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 

@@ -7,13 +7,13 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import AddBankAdmin from '@/components/registration/AddBankAdmin'
-import { authOptions } from '@/lib/auth';
+import AddBankAdmin from '../../../../components/registration/AddBankAdmin'
+import { authOptions } from '../../../../lib/auth';
 import { getServerSession } from 'next-auth';
 import { CorpUsers, columns } from "./columns"
 import { DataTable } from "./data-table"
-import { Button } from '@/components/ui/button';
-import CorporateCustomerRegistration from '@/components/registration/CorporateCustomerRegistration';
+import { Button } from '../../../../components/ui/button';
+import CorporateCustomerRegistration from '../../../../components/registration/CorporateCustomerRegistration';
 
 
 async function getData(): Promise<CorpUsers[]> {

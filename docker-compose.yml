@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: vcb-admin-dashboard
+    build: .
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - DOCKER=true  # Make sure this is set to 'true'
-    command: ["npm", "run", "start"]
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}

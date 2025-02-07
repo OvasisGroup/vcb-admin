@@ -8,13 +8,13 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import AddBankAdmin from '@/components/registration/AddBankAdmin'
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '../../../../lib/auth';
 import { getServerSession } from 'next-auth';
 import { Customer, columns } from "./columns"
 import { DataTable } from "./data-table"
 import { Button } from '@/components/ui/button';
 import CorporateCustomerRegistration from '@/components/registration/CorporateCustomerRegistration';
-import RetailCustomerForm from '@/components/registration/RetailCustomerRegistration';
+import RetailCustomerForm from '../../../../components/registration/RetailCustomerRegistration';
 
 
 async function getData(): Promise<Customer[]> {
