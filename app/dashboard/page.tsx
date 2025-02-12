@@ -4,15 +4,11 @@ import Stats from "@/components/Stats";
 import UserRegistrationMin from "./corporate-maintenance/user-registration-min/page";
 import CorpRegMin from "./corporate-maintenance/corporate-registration-min/page";
 
-
-
 export default function Home() {
-  
   return (
     <div className="p-6">
       <div className="px-2 flex justify-between">
         <p className="text-vcblue text-lg font-light">Dashboard </p>
-
       </div>
 
       <HomepageCards />
@@ -24,12 +20,11 @@ export default function Home() {
           </div>
         </div>
         <div className="bg-white p-6 rounded-2xl">
-          <UserRegistrationMin/>
-          <CorpRegMin/>
+          <UserRegistrationMin />
+          <CorpRegMin />
           <div className="mt-4"></div>
         </div>
       </div>
     </div>
   );
 }
-

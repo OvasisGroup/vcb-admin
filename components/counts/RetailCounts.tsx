@@ -13,7 +13,6 @@ const RetailCount: React.FC = () => {
       try {
         const response = await axios.get("/api/retailCount");
         if (response.data.message === "Success" && response.data.body.count !== undefined) {
-            console.log(response.data.body.count);
           setCount(response.data.body.count);
         } else {
           setError("Unexpected response from the server.");

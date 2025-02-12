@@ -13,7 +13,6 @@ const CorporateCount: React.FC = () => {
       try {
         const response = await axios.get("/api/corporateCount");
         if (response.data.message === "Success") {
-            console.log(response.data.body);
           setCount(response.data.body);
         } else {
           setError("Unexpected response from the server.");

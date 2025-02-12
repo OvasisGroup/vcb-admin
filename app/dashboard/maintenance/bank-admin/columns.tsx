@@ -18,11 +18,19 @@ import { useRouter } from "next/navigation"
 
 
 export type BankAdmin = {
+  roleId: number,
   userId: string,
   adminName: string,
-  idnumber: string,
   email: string,
+  employeeId: number,
+  phoneNumber: string,
   createdBy: string,
+}
+
+export type Role = {
+  id: number;
+  name: string;
+  description: string;
 }
 
 const BooleanCell = ({ value }: { value: boolean }) => {

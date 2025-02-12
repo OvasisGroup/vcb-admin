@@ -4,7 +4,7 @@ import axios from "axios";
 
 const RolesCount: React.FC = () => {
   const [count, setCount] = useState<number | null>(null); // State to hold the count
-  const [loading, setLoading] = useState<boolean>(true);   // State to manage loading
+  const [loading, setLoading] = useState<boolean>(true); // State to manage loading
   const [error, setError] = useState<string | null>(null); // State to manage errors
 
   // Fetch count from API
@@ -12,8 +12,10 @@ const RolesCount: React.FC = () => {
     const fetchCount = async () => {
       try {
         const response = await axios.get("/api/rolesCount");
-        if (response.data.message === "Success" && response.data.body.count !== undefined) {
-            console.log(response.data.body.count);
+        if (
+          response.data.message === "Success" &&
+          response.data.body.count !== undefined
+        ) {
           setCount(response.data.body.count);
         } else {
           setError("Unexpected response from the server.");
@@ -31,8 +33,8 @@ const RolesCount: React.FC = () => {
   // Render view
   return (
     <div className="p-4">
-          <p>{count}</p>
-        </div>
+      <p>{count}</p>
+    </div>
   );
 };
 

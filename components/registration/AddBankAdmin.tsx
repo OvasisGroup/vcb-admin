@@ -1,147 +1,197 @@
-"use client"
-import { useState, useEffect } from "react";
-import axios from "axios";
+"use client";
+import { useState} from "react";
+import { useSession } from "next-auth/react";
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import {
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "../ui/button";
+import { Role } from "@/app/dashboard/maintenance/bank-admin/columns";
 
-const AddBankAdmin = () => {
+interface AdminRoles {
+  rolesData: Role[];
+}
+
+export default function AddBankAdmin ({rolesData}:AdminRoles) {
+  const { data: session } = useSession();
   const [formData, setFormData] = useState({
     roleId: "",
     userId: "",
     adminName: "",
     email: "",
-    nationalId: "",
+    employeeId: "",
     phoneNumber: "",
   });
 
-  const [roles, setRoles] = useState<{ id: number; name: string }[]>([]);
   const [loadingRoles, setLoadingRoles] = useState(false);
-  const [errorRoles, setErrorRoles] = useState<string | null>(null);
+  const [errorRoles, setErrorRoles] = useState<string | null>(null); 
 
-  // Fetch roles from the API
-  useEffect(() => {
-    const fetchRoles = async () => {
-      setLoadingRoles(true);
-      try {
-        const response = await axios.get("/api/roles"); // Adjust to match your roles endpoint
-        setRoles(response.data.body);
-        setErrorRoles(null);
-      } catch (error) {
-        console.error("Error fetching roles:", error);
-        setErrorRoles("Failed to load roles.");
-      } finally {
-        setLoadingRoles(false);
-      }
-    };
-
-    fetchRoles();
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(formData);
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!session) {
+      throw new Error("No session found.");
+    }
+    const accessToken = session.user.access_token;
     try {
-      const response = await axios.post('/api/addBankAdmin', formData);
-      console.log("Success:", response.data);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL_ADMIN}/admin/initiate-registration`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error adding admin: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Admin registered successfully:", data);
+
+      window.location.reload();
+      return data;
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error registering admin:", error);
+      throw error;
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="roleId" className="block font-medium">Role</label>
-        {loadingRoles ? (
-          <p>Loading roles...</p>
-        ) : errorRoles ? (
-          <p className="text-red-500">{errorRoles}</p>
-        ) : (
-          <select
-            id="roleId"
-            name="roleId"
-            value={formData.roleId}
-            onChange={handleChange}
-            required
-            className="w-full border rounded px-3 py-2"
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Add Admin &rarr;</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[825px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Create Bank Admin</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="roleId" className="block font-medium">
+              Role
+            </label>
+            {loadingRoles ? (
+              <p>Loading roles...</p>
+            ) : errorRoles ? (
+              <p className="text-red-500">{errorRoles}</p>
+            ) : (
+              <select
+                id="roleId"
+                name="roleId"
+                value={formData.roleId}
+                onChange={handleChange}
+                required
+                className="w-full border rounded px-3 py-2"
+              >
+                <option value="" disabled>
+                  Select a role
+                </option>
+                {rolesData.map((role) => (
+                  <option key={role.id} value={role.id}>
+                    {role.name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+          <div>
+            <label htmlFor="adminName" className="block font-medium">
+              Admin Name
+            </label>
+            <input
+              type="text"
+              id="adminName"
+              name="adminName"
+              value={formData.adminName}
+              onChange={handleChange}
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="adminName" className="block font-medium">
+              User Id
+            </label>
+            <input
+              type="text"
+              id="userId"
+              name="userId"
+              value={formData.userId}
+              onChange={handleChange}
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block font-medium">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="employeeId" className="block font-medium">
+              Employee ID
+            </label>
+            <input
+              type="number"
+              id="employeeId"
+              name="employeeId"
+              value={formData.employeeId}
+              onChange={handleChange}
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="phoneNumber" className="block font-medium">
+              Phone Number
+            </label>
+            <input
+              type="text"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded"
           >
-            <option value="" disabled>
-              Select a role
-            </option>
-            {roles.map((role) => (
-              <option key={role.id} value={role.id}>
-                {role.name}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
-      <div>
-        <label htmlFor="adminName" className="block font-medium">Admin Name</label>
-        <input
-          type="text"
-          id="adminName"
-          name="adminName"
-          value={formData.adminName}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-3 py-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="adminName" className="block font-medium">User Id</label>
-        <input
-          type="text"
-          id="userId"
-          name="userId"
-          value={formData.userId}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-3 py-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="email" className="block font-medium">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-3 py-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="nationalId" className="block font-medium">National ID</label>
-        <input
-          type="number"
-          id="nationalId"
-          name="nationalId"
-          value={formData.nationalId}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-3 py-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="phoneNumber" className="block font-medium">Phone Number</label>
-        <input
-          type="text"
-          id="phoneNumber"
-          name="phoneNumber"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-3 py-2"
-        />
-      </div>
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
-    </form>
+            Submit
+          </button>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default AddBankAdmin;
+
