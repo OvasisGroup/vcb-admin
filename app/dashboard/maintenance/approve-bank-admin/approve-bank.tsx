@@ -11,8 +11,7 @@ interface ApproveBankAdminClientProps {
 export default function ApproveBankAdminClient({
   initialRoles,
 }: ApproveBankAdminClientProps) {
-    
-    const { data: session } = useSession();
+  const { data: session } = useSession();
 
   const approveBankAdmin = async (adminDraftId: number) => {
     if (!session) {
@@ -33,6 +32,7 @@ export default function ApproveBankAdminClient({
       );
 
       if (!response.ok) {
+        console.error(`Error approving bank admin: ${response.statusText}`);
         throw new Error(`Error approving bank admin: ${response.statusText}`);
       }
 
@@ -47,7 +47,7 @@ export default function ApproveBankAdminClient({
     }
   };
 
-  const rejectRole = async (adminDraftId: number) => {
+  const rejectBankAdmin = async (adminDraftId: number) => {
     if (!session) {
       throw new Error("No session found.");
     }
@@ -90,7 +90,7 @@ export default function ApproveBankAdminClient({
 
   const handleReject = async (adminDraftId: number) => {
     try {
-      await rejectRole(adminDraftId);
+      await rejectBankAdmin(adminDraftId);
     } catch (error) {
       console.error("Rejecting bank admin failed:", error);
     }

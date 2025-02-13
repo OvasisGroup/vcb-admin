@@ -1,18 +1,8 @@
 import React from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import AddBankAdmin from "../../../../components/registration/AddBankAdmin";
 import { authOptions } from "../../../../lib/auth";
 import { getServerSession } from "next-auth";
 import { CorpUsers, columns } from "./columns";
 import { DataTable } from "./data-table";
-import { Button } from "../../../../components/ui/button";
 import CorporateCustomerRegistration from "../../../../components/registration/CorporateCustomerRegistration";
 
 async function getData(): Promise<CorpUsers[]> {
@@ -30,11 +20,11 @@ async function getData(): Promise<CorpUsers[]> {
         Authorization: `Bearer ${accessToken}`,
       },
     }
-  ); // Replace with your endpoint
+  );
   const data = await res.json();
-  // Ensure data matches your table structure
+
   if (!data || !data.body || !Array.isArray(data.body)) {
-    return []; // Return empty array if no valid data
+    return [];
   }
   return data.body;
 }
@@ -52,19 +42,6 @@ export default async function UserRegistration() {
             maintenance/corporate-registration
           </p>
         </div>
-{/*         
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button>Add Customer</Button>
-          </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Fill in the details to Create Customer</SheetTitle>
-
-              <AddBankAdmin />
-            </SheetHeader>
-          </SheetContent>
-        </Sheet> */}
       </div>
 
       <div></div>

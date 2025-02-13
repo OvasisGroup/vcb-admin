@@ -1,7 +1,5 @@
-// "use client"
 import { authOptions } from "@/lib/auth";
-import { Roles, columns } from "./columns";
-import { DataTable } from "./data-table";
+import { Roles } from "./columns";
 import { getServerSession } from "next-auth";
 import ApproveRolesClient from "./approve-roles";
 
@@ -22,7 +20,7 @@ async function getRoles(): Promise<Roles[]> {
     }
   );
   const data = await res.json();
-  console.log("Pending Corporate admin roles", data);
+  console.log("Pending Bank admin roles", data);
   return data.body;
 }
 

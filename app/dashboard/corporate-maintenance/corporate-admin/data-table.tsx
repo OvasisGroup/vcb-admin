@@ -71,12 +71,12 @@ export function DataTable<TData, TValue>({
     <div className="mb-4">
       <div className="mb-4 flex justify-between items-center">
         <Input
-          placeholder="Filter ID Number..."
+          placeholder="Filter Admin name..."
           value={
-            (table.getColumn("idNumber")?.getFilterValue() as string) ?? ""
+            (table.getColumn("adminName")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("idNumber")?.setFilterValue(event.target.value)
+            table.getColumn("adminName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

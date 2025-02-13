@@ -16,11 +16,13 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 
 export type BankAdmin = {
-  userId: string;
-  adminName: string;
-  idnumber: string;
-  email: string;
-  createdBy: string;
+  roleId: number,
+  userId: string,
+  adminName: string,
+  email: string,
+  employeeId: number,
+  phoneNumber: string,
+  createdBy: string,
 };
 
 export type Role = {
@@ -34,28 +36,6 @@ const BooleanCell = ({ value }: { value: boolean }) => {
 };
 
 export const columns: ColumnDef<BankAdmin>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
 
   {
     accessorKey: "userId",
@@ -68,8 +48,8 @@ export const columns: ColumnDef<BankAdmin>[] = [
   },
 
   {
-    accessorKey: "idNumber",
-    header: "ID Number",
+    accessorKey: "employeeId",
+    header: "Employee ID",
   },
 
   {

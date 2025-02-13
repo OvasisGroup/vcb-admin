@@ -1,20 +1,19 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { Roles, columns } from "./columns";
+import { RetailUsers, columns } from "./columns";
 import { DataTable } from "./data-table";
 
 interface ApproveUserClientProps {
-  initialRoles: Roles[];
+  initialRoles: RetailUsers[];
 }
 
 export default function ApproveUserClient({
   initialRoles,
 }: ApproveUserClientProps) {
-    
-    const { data: session } = useSession();
+  const { data: session } = useSession();
 
-  const approveRole = async (draftId: number) => {
+  const approveRetailUser = async (signatoryDraftId: number) => {
     if (!session) {
       throw new Error("No session found.");
     }
@@ -22,7 +21,7 @@ export default function ApproveUserClient({
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_AUTH_URL_API}/authentication/role/${draftId}/approve`,
+        `${process.env.NEXT_PUBLIC_BASE_URL_ADMIN}/admin/customer/approve/${signatoryDraftId}`,
         {
           method: "POST",
           headers: {
@@ -33,21 +32,21 @@ export default function ApproveUserClient({
       );
 
       if (!response.ok) {
-        throw new Error(`Error approving role: ${response.statusText}`);
+        throw new Error(`Error approving retail user: ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log("Role approved successfully:", data);
+      console.log("Retail user approved successfully:", data);
 
       window.location.reload();
       return data;
     } catch (error) {
-      console.error("Error approving role:", error);
+      console.error("Error approving retail user:", error);
       throw error;
     }
   };
 
-  const rejectRole = async (draftId: number) => {
+  const rejectRole = async (signatoryDraftId: number) => {
     if (!session) {
       throw new Error("No session found.");
     }
@@ -55,7 +54,7 @@ export default function ApproveUserClient({
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_AUTH_URL_API}/authentication/role/reject`,
+        `${process.env.NEXT_PUBLIC_BASE_URL_ADMIN}/authentication/role/reject`,
         {
           method: "POST",
           headers: {
@@ -66,33 +65,33 @@ export default function ApproveUserClient({
       );
 
       if (!response.ok) {
-        throw new Error(`Error rejecting role: ${response.statusText}`);
+        throw new Error(`Error rejecting retail user: ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log("Role rejected successfully:", data);
+      console.log("Retail user rejected successfully:", data);
 
       window.location.reload();
       return data;
     } catch (error) {
-      console.error("Error rejecting role:", error);
+      console.error("Error rejecting retail user:", error);
       throw error;
     }
   };
 
-  const handleApprove = async (draftId: number) => {
+  const handleApprove = async (signatoryDraftId: number) => {
     try {
-      await approveRole(draftId);
+      await approveRetailUser(signatoryDraftId);
     } catch (error) {
-      console.error("Approving role failed:", error);
+      console.error("Approving retail user failed:", error);
     }
   };
 
-  const handleReject = async (draftId: number) => {
+  const handleReject = async (signatoryDraftId: number) => {
     try {
-      await rejectRole(draftId);
+      await rejectRole(signatoryDraftId);
     } catch (error) {
-      console.error("Rejecting role failed:", error);
+      console.error("Rejecting retail user failed:", error);
     }
   };
 

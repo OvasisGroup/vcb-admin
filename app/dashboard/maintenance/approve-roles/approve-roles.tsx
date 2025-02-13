@@ -66,7 +66,7 @@ export default function ApproveRolesClient({
       );
 
       if (!response.ok) {
-        throw new Error(`Error rejecting role: ${response.statusText}`);
+        throw new Error(`Error rejecting bank admin role: ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -75,7 +75,7 @@ export default function ApproveRolesClient({
       window.location.reload();
       return data;
     } catch (error) {
-      console.error("Error rejecting role:", error);
+      console.error("Error rejecting bank admin role:", error);
       throw error;
     }
   };

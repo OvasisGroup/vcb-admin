@@ -78,14 +78,14 @@ export function DataTable<TData, TValue>({
         try {
           await onApprove(adminDraftId);
         } catch (error) {
-          console.error("Error approving role:", error);
+          console.error("Error approving bank admin:", error);
         }
       },
       onReject: async (adminDraftId: number) => {
         try {
           await onReject(adminDraftId);
         } catch (error) {
-          console.error("Error rejecting role:", error);
+          console.error("Error rejecting bank admin:", error);
         }
       },
     },

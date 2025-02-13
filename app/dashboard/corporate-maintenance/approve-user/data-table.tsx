@@ -37,8 +37,8 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onApprove: (draftId: number) => Promise<void>;
-  onReject: (draftId: number) => Promise<void>;
+  onApprove: (signatoryDraftId: number) => Promise<void>;
+  onReject: (signatoryDraftId: number) => Promise<void>;
 }
 
 export function DataTable<TData, TValue>({
@@ -74,18 +74,18 @@ export function DataTable<TData, TValue>({
     },
 
     meta: {
-      onApprove: async (draftId: number) => {
+      onApprove: async (signatoryDraftId: number) => {
         try {
-          await onApprove(draftId);
+          await onApprove(signatoryDraftId);
         } catch (error) {
-          console.error("Error approving role:", error);
+          console.error("Error approving retail user:", error);
         }
       },
-      onReject: async (draftId: number) => {
+      onReject: async (signatoryDraftId: number) => {
         try {
-          await onReject(draftId);
+          await onReject(signatoryDraftId);
         } catch (error) {
-          console.error("Error rejecting role:", error);
+          console.error("Error rejecting retail user:", error);
         }
       },
     },
@@ -96,9 +96,9 @@ export function DataTable<TData, TValue>({
       <div className="mb-4 flex justify-between items-center">
         <Input
           placeholder="Filter Draft Ids..."
-          value={(table.getColumn("draftId")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("signatoryDraftId")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("draftId")?.setFilterValue(event.target.value)
+            table.getColumn("signatoryDraftId")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

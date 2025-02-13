@@ -1,20 +1,19 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { Roles, columns } from "./columns";
+import { Corporate, columns } from "./columns";
 import { DataTable } from "./data-table";
 
 interface ApproveCorporateClientProps {
-  initialRoles: Roles[];
+  initialCorporate: Corporate[];
 }
 
 export default function ApproveCorporateClient({
-  initialRoles,
+  initialCorporate,
 }: ApproveCorporateClientProps) {
-    
-    const { data: session } = useSession();
+  const { data: session } = useSession();
 
-  const approveRole = async (draftId: number) => {
+  const approveCorp = async (corpDraftId: number) => {
     if (!session) {
       throw new Error("No session found.");
     }
@@ -22,7 +21,7 @@ export default function ApproveCorporateClient({
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_AUTH_URL_API}/authentication/role/${draftId}/approve`,
+        `${process.env.NEXT_PUBLIC_BASE_URL_ADMIN}/admin/corporate/approve/${corpDraftId}`,
         {
           method: "POST",
           headers: {
@@ -33,21 +32,21 @@ export default function ApproveCorporateClient({
       );
 
       if (!response.ok) {
-        throw new Error(`Error approving role: ${response.statusText}`);
+        throw new Error(`Error approving corporate: ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log("Role approved successfully:", data);
+      console.log("Corporate approved successfully:", data);
 
       window.location.reload();
       return data;
     } catch (error) {
-      console.error("Error approving role:", error);
+      console.error("Error approving corporate:", error);
       throw error;
     }
   };
 
-  const rejectRole = async (draftId: number) => {
+  const rejectCorporate = async (corpDraftId: number) => {
     if (!session) {
       throw new Error("No session found.");
     }
@@ -55,7 +54,7 @@ export default function ApproveCorporateClient({
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_AUTH_URL_API}/authentication/role/reject`,
+        `${process.env.NEXT_PUBLIC_BASE_URL_ADMIN}/admin/role/reject`,
         {
           method: "POST",
           headers: {
@@ -66,40 +65,40 @@ export default function ApproveCorporateClient({
       );
 
       if (!response.ok) {
-        throw new Error(`Error rejecting role: ${response.statusText}`);
+        throw new Error(`Error rejecting corporate: ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log("Role rejected successfully:", data);
+      console.log("Corporate rejected successfully:", data);
 
       window.location.reload();
       return data;
     } catch (error) {
-      console.error("Error rejecting role:", error);
+      console.error("Error rejecting corporate:", error);
       throw error;
     }
   };
 
-  const handleApprove = async (draftId: number) => {
+  const handleApprove = async (corpDraftId: number) => {
     try {
-      await approveRole(draftId);
+      await approveCorp(corpDraftId);
     } catch (error) {
-      console.error("Approving role failed:", error);
+      console.error("Approving corporative failed:", error);
     }
   };
 
-  const handleReject = async (draftId: number) => {
+  const handleReject = async (corpDraftId: number) => {
     try {
-      await rejectRole(draftId);
+      await rejectCorporate(corpDraftId);
     } catch (error) {
-      console.error("Rejecting role failed:", error);
+      console.error("Rejecting corporative failed:", error);
     }
   };
 
   return (
     <DataTable
       columns={columns}
-      data={initialRoles}
+      data={initialCorporate}
       onApprove={handleApprove}
       onReject={handleReject}
     />

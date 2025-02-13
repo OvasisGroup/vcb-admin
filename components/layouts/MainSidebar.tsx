@@ -142,7 +142,7 @@ export default function MainSidebar() {
             },
             {
               icon: "",
-              label: "Approve Corporate User",
+              label: "Approve Corporate",
               link: "/dashboard/corporate-maintenance/approve-corporate",
             },
             {

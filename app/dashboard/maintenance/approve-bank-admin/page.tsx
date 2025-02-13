@@ -1,4 +1,3 @@
-// "use client"
 import { authOptions } from "@/lib/auth";
 import { BankAdmin } from "./columns";
 import { getServerSession } from "next-auth";
@@ -21,7 +20,7 @@ async function getPendingAdmin(): Promise<BankAdmin[]> {
     }
   );
   const data = await res.json();
-  console.log("Pending Corporate admin roles", data);
+  console.log("Pending Bank admins", data);
   return data.body;
 }
 

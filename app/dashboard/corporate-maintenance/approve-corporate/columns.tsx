@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export type Roles = {
+export type Corporate = {
   id: number;
-  draftId: number;
+  corpDraftId: number;
   name: string;
   description: string;
   status: string;
@@ -28,20 +28,20 @@ const BooleanCell = ({ value }: { value: boolean }) => {
 };
 
 interface ColumnActionsProps {
-  draftId: number;
-  onApprove: (draftId: number) => Promise<void>;
-  onReject: (draftId: number) => Promise<void>;
+  corpDraftId: number;
+  onApprove: (corpDraftId: number) => Promise<void>;
+  onReject: (corpDraftId: number) => Promise<void>;
 }
 
 const ColumnActions: React.FC<ColumnActionsProps> = ({
-  draftId,
+  corpDraftId,
   onApprove,
   onReject,
 }) => {
   return (
     <div className="flex items-center gap-2">
       <Button
-        onClick={() => onApprove(draftId)}
+        onClick={() => onApprove(corpDraftId)}
         className="bg-green-600 hover:bg-green-700 text-white"
         size="sm"
       >
@@ -49,7 +49,7 @@ const ColumnActions: React.FC<ColumnActionsProps> = ({
         Approve
       </Button>
       <Button
-        onClick={() => onReject(draftId)}
+        onClick={() => onReject(corpDraftId)}
         className="bg-red-600 hover:bg-red-700 text-white"
         size="sm"
       >
@@ -60,20 +60,25 @@ const ColumnActions: React.FC<ColumnActionsProps> = ({
   );
 };
 
-export const columns: ColumnDef<Roles>[] = [
+export const columns: ColumnDef<Corporate>[] = [
   {
-    accessorKey: "draftId",
+    accessorKey: "corpDraftId",
     header: "ID",
   },
 
   {
     accessorKey: "name",
-    header: "Role Name",
+    header: "corporate Name",
+  },
+  
+  {
+    accessorKey: "dateOfIncorporation",
+    header: "Date of Incorporation",
   },
 
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: "numberOfUsers",
+    header: "No. of Users",
   },
 
   {
@@ -85,15 +90,15 @@ export const columns: ColumnDef<Roles>[] = [
     id: "actions",
     header: "Actions",
     cell: ({ row, table }) => {
-      const role = row.original;
+      const corporate = row.original;
 
-      if (role.status !== "PENDING") {
+      if (corporate.status !== "PENDING") {
         return null;
       }
 
       return (
         <ColumnActions
-          draftId={role.draftId}
+          corpDraftId={corporate.corpDraftId}
           onApprove={(table.options.meta as any)?.onApprove}
           onReject={(table.options.meta as any)?.onReject}
         />

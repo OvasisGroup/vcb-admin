@@ -1,18 +1,9 @@
 import React from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import AddBankAdmin from "@/components/registration/AddBankAdmin";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { BankAdmin, columns, Role } from "./columns";
 import { DataTable } from "./data-table";
-import { Button } from "@/components/ui/button";
 
 async function getData(): Promise<BankAdmin[]> {
   const session = await getServerSession(authOptions);
@@ -20,13 +11,16 @@ async function getData(): Promise<BankAdmin[]> {
     throw new Error("No session found.");
   }
   const accessToken = session.user.access_token;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_ADMIN}/admin/all`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  }); 
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL_ADMIN}/admin/all`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
   const data = await res.json();
   console.log("bank admins", data);
   return data.body;
@@ -63,19 +57,8 @@ export default async function BankAdmins() {
           <p className="font-light text-2xl  text-vcblue">Bank Admin</p>
           <p className="font-light text-black">maintenance/bank-admin</p>
         </div>
-        {/*  */}
-        {/* <Sheet>
-          <SheetTrigger asChild>
-            <Button>Add Admin</Button>
-          </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Fill in the details to create Bank Admin</SheetTitle>
 
-            </SheetHeader>
-          </SheetContent>
-        </Sheet> */}
-              <AddBankAdmin rolesData={rolesData}/>
+        <AddBankAdmin rolesData={rolesData} />
       </div>
 
       <div></div>
